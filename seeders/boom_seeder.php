@@ -23,6 +23,7 @@ class BoomSeeder extends Seeder
             "uid" => "device",
             "name" => "设备管理",
             "type" => 0,
+            "router" => "/device",
             "parent" => "root",
             "icon_type" => null,
             "icon" => null
@@ -32,7 +33,7 @@ class BoomSeeder extends Seeder
             "name" => "设备列表",
             "type" => 0,
             "parent" => "device",
-            "router" => "/device",
+            "router" => "/device/list",
             "icon_type" => null,
             "icon" => null
         ]);
