@@ -45,6 +45,7 @@ class Guard{
             $admin->loginip = $lastLoginIp;
             $admin->logintime = Carbon::now();
             $admin->token_expire = self::getExpireAt(60);
+            $admin->created_at = Carbon::now();
             $admin->save();
         }
 

@@ -1,19 +1,19 @@
 <?php
 
 declare (strict_types=1);
-
 namespace App\Model;
 
+use Hyperf\DbConnection\Model\Model;
 /**
  */
-class Admin extends Model
+class Permission extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'admin';
+    protected $table = 'permissions';
     /**
      * The attributes that are mass assignable.
      *
@@ -28,13 +28,8 @@ class Admin extends Model
     protected $casts = [];
 
 
-    /**
-     * 协程上下文中存储当前登录用户的Key值
-     */
-    const ContextLoginUserKey="login_admin";
-
-    const CREATED_AT = 'created_at';
-
-    const UPDATED_AT = 'updated_at';
-
+    //----------------- scope ------------------
+    public function scopeMenu($query){
+        return $query->where("type",0);
+    }
 }

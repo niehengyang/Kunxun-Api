@@ -14,14 +14,14 @@ class CreateTables extends Migration
 
         //账号表
         Schema::create('admin', function (Blueprint $table) {
-            $table->bigIncrements('admin_id');
-            $table->char('admin_login')->comment("账号（默认电话号码）");
-            $table->char('admin_password')->comment("登录密码");
-            $table->bigInteger('admin_status')->comment("用户状态（1：可用 0：禁用）")->default(1);
-            $table->string('admin_token')->comment("token")->nullable();
-            $table->string('admin_token_expired_at')->comment("token过期时间")->nullable();
-            $table->string('admin_loginip')->comment("登录ip")->nullable();
-            $table->string('admin_logintime')->comment("登录时间")->nullable();
+            $table->bigIncrements('id');
+            $table->string('loginname')->comment("账号");
+            $table->string('password')->comment("登录密码");
+            $table->bigInteger('status')->default(1)->comment("用户状态（1：可用 0：禁用）");
+            $table->string('token')->comment("token")->nullable();
+            $table->string('token_expire')->comment("token过期时间")->nullable();
+            $table->string('loginip')->comment("登录ip")->nullable();
+            $table->string('logintime')->comment("登录时间")->nullable();
             $table->timestamps();
         });
 
