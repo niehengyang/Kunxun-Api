@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
+use App\EsLogger;
+use App\Exception\CustomHttpException;
 use App\Model\Admin;
 use App\Service\Auth\Guard;
 
@@ -43,12 +45,15 @@ class WebAuthMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
 
+        EsLogger::get()->debug(__METHOD__);
+
         $token = false;
         if($this->request->hasHeader("X-Token")){
             $token = $this->request->header("X-Token");
         }elseif($this->request->has("X-Token")){
             $token = $this->request->input("X-Token");
         }
+        EsLogger::get()->debug("token={$token}");
         if(false === $token){
             throw new CustomHttpException("未设置Token",401,40101);
         }
