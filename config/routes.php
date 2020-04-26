@@ -34,6 +34,6 @@ Router::addGroup("/permission/",function(){
 Router::addGroup("/web/",function(){
 //ex :     Router::post("auth/logout","App\Controller\Api\AuthController@index");
 
-
+    Router::addRoute("GET", "menu", "App\Controller\Web\PermissionController@webMenuList");
 
 },["middleware" => [App\Middleware\WebAuthMiddleware::class]]);

@@ -6,6 +6,7 @@ namespace App\Controller\Web;
 
 use App\Controller\AbstractController;
 use App\EsLogger;
+use App\Exception\CustomHttpException;
 use App\Model\Permission;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
@@ -17,11 +18,51 @@ class PermissionController extends AbstractController
 
     }
 
+    /**
+     * 命令行获取菜单数据
+     * @param RequestInterface $request
+     * @param ResponseInterface $response
+     * @return \Psr\Http\Message\ResponseInterface
+     */
     public function menuList(RequestInterface $request, ResponseInterface $response){
-        $menuList = Permission::where("parent",'root')->menu()->get();
+        $columns = ["router","name","uid"];
+        $menuList = Permission::where("parent",'root')->menu()->get($columns);
+        $menus = $this->getChildrens($menuList,$columns);
+
+        return $response->json(["data" => $menus]);
+    }
+
+    /**
+     * Web获取菜单
+     * @param RequestInterface $request
+     * @param ResponseInterface $response
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function webMenuList(RequestInterface $request, ResponseInterface $response){
+        $columns = ["router","uid","type","name","icon_type","icon"];
+        $menuList = Permission::where("parent",'root')->menu()->get($columns);
+        $menus = $this->getChildrens($menuList,$columns);
+
+        return $response->json(["data" => $menus]);
+    }
+
+    private function getChildrens($menuList,$columns){
+        foreach ($menuList as $menu){
+            $menuChildren = Permission::where("parent",$menu->uid)->menu()->get($columns);
+            $menu['children'] = $menuChildren;
+            $this->getChildrens($menuChildren,$columns);
+        }
+        return $menuList;
+    }
 
 
-        return $response->json(["data" => $menuList]);
+    public function webPermissions(RequestInterface $request, ResponseInterface $response){
+
+
+
+        if($this->user()->loginname == 'boom'){
+
+        }
     }
 
     public function store(RequestInterface $request, ResponseInterface $response){
@@ -44,11 +85,5 @@ class PermissionController extends AbstractController
 
         $permission->save();
         return ;
-    }
-
-    private function getChildrens($menuList){
-        foreach ($menuList as $menu){
-
-        }
     }
 }
