@@ -19,7 +19,7 @@ class Permission extends Model
      *
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = ['uid','name','type','parent','router','icon_type','icon','uri','http_method','desc','template'];
     /**
      * The attributes that should be cast to native types.
      *
@@ -32,4 +32,5 @@ class Permission extends Model
     public function scopeMenu($query){
         return $query->where("type",0);
     }
+
 }

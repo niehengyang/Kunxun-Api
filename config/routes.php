@@ -24,8 +24,16 @@ Router::addGroup("/auth/login/", function(){
     Router::addRoute("POST","web", "App\Controller\AuthController@webLogin");
 });
 
+/** 权限路由 */
+
+Router::addGroup("/permission/",function(){
+    Router::addRoute("POST", "create", "App\Controller\Web\PermissionController@store");
+});
 
 /** 带中间件的路由 */
 Router::addGroup("/web/",function(){
 //ex :     Router::post("auth/logout","App\Controller\Api\AuthController@index");
+
+
+
 },["middleware" => [App\Middleware\WebAuthMiddleware::class]]);

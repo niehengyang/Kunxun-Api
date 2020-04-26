@@ -24,6 +24,28 @@ class PermissionController extends AbstractController
         return $response->json(["data" => $menuList]);
     }
 
+    public function store(RequestInterface $request, ResponseInterface $response){
+
+        $uid = $request->input('uid_name');
+        $parentId = $request->input('parentId');
+
+
+        if($parentId == 0) {
+            $parent = 'root';
+            $uidPrefix = '';
+        } else {
+            $parent = Permission::query()->find($parentId)->uid;
+            $uidPrefix = $parent.'.';
+        }
+
+        $permission = new Permission($request->all());
+        $permission->uid = $uidPrefix.$uid;
+        $permission->parent = $parent;
+
+        $permission->save();
+        return ;
+    }
+
     private function getChildrens($menuList){
         foreach ($menuList as $menu){
 
