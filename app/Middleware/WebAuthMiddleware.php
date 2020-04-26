@@ -9,6 +9,7 @@ use App\Exception\CustomHttpException;
 use App\Model\Admin;
 use App\Service\Auth\Guard;
 
+use Carbon\Carbon;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -48,12 +49,11 @@ class WebAuthMiddleware implements MiddlewareInterface
         EsLogger::get()->debug(__METHOD__);
 
         $token = false;
-        if($this->request->hasHeader("X-Token")){
-            $token = $this->request->header("X-Token");
+        if($this->request->hasHeader("Authorization")){
+            $token = $this->request->header("Authorization");
         }elseif($this->request->has("X-Token")){
             $token = $this->request->input("X-Token");
         }
-        EsLogger::get()->debug("token={$token}");
         if(false === $token){
             throw new CustomHttpException("未设置Token",401,40101);
         }

@@ -20,29 +20,20 @@ class BoomSeeder extends Seeder
         ]);
 
         Db::table("permissions")->insert([
-            "uid" => "device",
-            "name" => "设备管理",
+            "uid" => "system",
+            "name" => "系统管理",
             "type" => 0,
-            "router" => "/device",
+            "router" => "/system",
             "parent" => "root",
             "icon_type" => null,
             "icon" => null
         ]);
         Db::table("permissions")->insert([
-            "uid" => "device.list",
-            "name" => "设备列表",
+            "uid" => "system.nav",
+            "name" => "菜单配置",
             "type" => 0,
-            "parent" => "device",
-            "router" => "/device/list",
-            "icon_type" => null,
-            "icon" => null
-        ]);
-        Db::table("permissions")->insert([
-            "uid" => "device.type",
-            "name" => "设备类型",
-            "type" => 0,
-            "parent" => "device",
-            "router" => "/device/type",
+            "parent" => "system",
+            "router" => "/system/nav",
             "icon_type" => null,
             "icon" => null
         ]);

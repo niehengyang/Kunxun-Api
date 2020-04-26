@@ -6,6 +6,7 @@ namespace App\Controller\Web;
 
 use App\Controller\AbstractController;
 use App\EsLogger;
+use App\Exception\CustomHttpException;
 use App\Model\Permission;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
@@ -24,18 +25,43 @@ class PermissionController extends AbstractController
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function menuList(RequestInterface $request, ResponseInterface $response){
-        $menuList = Permission::where("parent",'root')->menu()->get(["router","uid","name"]);
-        $menus = $this->getChildrens($menuList);
+        $columns = ["router","name","uid"];
+        $menuList = Permission::where("parent",'root')->menu()->get($columns);
+        $menus = $this->getChildrens($menuList,$columns);
 
         return $response->json(["data" => $menus]);
     }
 
-    private function getChildrens($menuList){
+    /**
+     * Web获取菜单
+     * @param RequestInterface $request
+     * @param ResponseInterface $response
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function webMenuList(RequestInterface $request, ResponseInterface $response){
+        $columns = ["router","uid","type","name","icon_type","icon"];
+        $menuList = Permission::where("parent",'root')->menu()->get($columns);
+        $menus = $this->getChildrens($menuList,$columns);
+
+        return $response->json(["data" => $menus]);
+    }
+
+    private function getChildrens($menuList,$columns){
         foreach ($menuList as $menu){
-            $menuChildren = Permission::where("parent",$menu->uid)->menu()->get(["router","uid","name"]);
+            $menuChildren = Permission::where("parent",$menu->uid)->menu()->get($columns);
             $menu['children'] = $menuChildren;
-            $this->getChildrens($menuChildren);
+            $this->getChildrens($menuChildren,$columns);
         }
         return $menuList;
+    }
+
+
+    public function webPermissions(RequestInterface $request, ResponseInterface $response){
+
+
+
+        if($this->user()->loginname == 'boom'){
+
+        }
     }
 }

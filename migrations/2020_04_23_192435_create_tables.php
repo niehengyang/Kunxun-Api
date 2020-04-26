@@ -25,6 +25,13 @@ class CreateTables extends Migration
             $table->timestamps();
         });
 
+        //账号信息表
+        Schema::create('account', function (Blueprint $table) {
+            $table->integer('id');
+            $table->integer('role_id');
+            $table->timestamps();
+        });
+
         //权限表
         Schema::create("permissions", function (Blueprint $table){
             $table->bigIncrements('id');

@@ -28,4 +28,7 @@ Router::addGroup("/auth/login/", function(){
 /** 带中间件的路由 */
 Router::addGroup("/web/",function(){
 //ex :     Router::post("auth/logout","App\Controller\Api\AuthController@index");
+
+    Router::addRoute("GET", "menu", "App\Controller\Web\PermissionController@webMenuList");
+
 },["middleware" => [App\Middleware\WebAuthMiddleware::class]]);
